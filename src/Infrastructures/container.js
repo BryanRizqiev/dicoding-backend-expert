@@ -1,6 +1,8 @@
 /* istanbul ignore file */
-
 const { createContainer } = require('instances-container')
+
+// js module
+const date = Date
 
 // external agency
 const { nanoid } = require('nanoid')
@@ -10,8 +12,12 @@ const pool = require('./database/postgres/pool')
 
 // service (repository, helper, manager, etc)
 const UserRepository = require('../Domains/users/UserRepository')
-const PasswordHash = require('../Applications/security/PasswordHash')
 const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres')
+const ThreadRepository = require('../Domains/threads/ThreadRepository')
+const ThreadRepositoryPostgres = require('./repository/ThreadRepositoryPostgres')
+const ThreadCommentRepository = require('../Domains/threadComments/ThreadCommentRepository')
+const ThreadCommentRepositoryPostgres = require('./repository/ThreadCommentRepositoryPostgres')
+const PasswordHash = require('../Applications/security/PasswordHash')
 const BcryptPasswordHash = require('./security/BcryptPasswordHash')
 
 // use case
@@ -23,6 +29,8 @@ const AuthenticationRepository = require('../Domains/authentications/Authenticat
 const AuthenticationRepositoryPostgres = require('./repository/AuthenticationRepositoryPostgres')
 const LogoutUserUseCase = require('../Applications/use_case/LogoutUserUseCase')
 const RefreshAuthenticationUseCase = require('../Applications/use_case/RefreshAuthenticationUseCase')
+const ThreadUsecase = require('../Applications/use_case/ThreadUseCase')
+const ThreadCommentUseCase = require('../Applications/use_case/ThreadCommentUseCase')
 
 // creating container
 const container = createContainer()
@@ -39,6 +47,40 @@ container.register([
         },
         {
           concrete: nanoid
+        }
+      ]
+    }
+  },
+  {
+    key: ThreadRepository.name,
+    Class: ThreadRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool
+        },
+        {
+          concrete: nanoid
+        },
+        {
+          concrete: date
+        }
+      ]
+    }
+  },
+  {
+    key: ThreadCommentRepository.name,
+    Class: ThreadCommentRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool
+        },
+        {
+          concrete: nanoid
+        },
+        {
+          concrete: date
         }
       ]
     }
@@ -93,6 +135,40 @@ container.register([
         {
           name: 'passwordHash',
           internal: PasswordHash.name
+        }
+      ]
+    }
+  },
+  {
+    key: ThreadUsecase.name,
+    Class: ThreadUsecase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'threadRepository',
+          internal: ThreadRepository.name
+        },
+        {
+          name: 'commentRepository',
+          internal: ThreadCommentRepository.name
+        }
+      ]
+    }
+  },
+  {
+    key: ThreadCommentUseCase.name,
+    Class: ThreadCommentUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'threadRepository',
+          internal: ThreadRepository.name
+        },
+        {
+          name: 'commentRepository',
+          internal: ThreadCommentRepository.name
         }
       ]
     }
