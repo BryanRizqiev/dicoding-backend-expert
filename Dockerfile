@@ -10,17 +10,13 @@ ENV ACCESS_TOKEN_KEY=
 ENV REFRESH_TOKEN_KEY=
 ENV ACCESS_TOKEN_AGE=3000
 
-RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
+WORKDIR /home/node/forumapi
 
-WORKDIR /home/node/app
-
-COPY package.json ./
-
-USER node
+COPY package*.json ./
 
 RUN npm install
 
-COPY --chown=node:node . .
+COPY  . .
 
 EXPOSE $PORT
 
