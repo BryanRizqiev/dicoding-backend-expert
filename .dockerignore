@@ -1,7 +1,6 @@
 .github
 coverage
 node_modules
-package-lock.json
 .env
 .test.env
 config.database.json
