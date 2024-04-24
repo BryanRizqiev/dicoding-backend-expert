@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  docker:
+  containerized:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -27,3 +27,21 @@ jobs:
         file: ./Dockerfile
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/forumapi:0.1
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: SSH and deploy app
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.KEY }}
+        port: ${{ secrets.PORT }}
+        passphrase: ${{ secrets.PASSPHRASE }}
+        script: |
+          sudo docker stop forumapi-container
+          sudo docker rm forumapi-container
+          sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/forumapi-container:0.1
+
+          sudo docker run -d --network=host --restart=always -e PGHOST=${{ secrets.PGHOST }} -e PGPORT=${{ secrets.PGPORT }} -e PGUSER=${{ secrets.PGUSER }} -e PGPASSWORD=${{ secrets.PGPASSWORD }} -e PGDATABASE=${{ secrets.PGDATABASE }} -e ACCESS_TOKEN_KEY=${{ secrets.ACCESS_TOKEN_KEY }} -e REFRESH_TOKEN_KEY=${{ REFRESH_TOKEN_KEY.PGDATABASE }} --name forumapi-cointainer ${{ secrets.DOCKERHUB_USERNAME }}/forumapi:0.1
