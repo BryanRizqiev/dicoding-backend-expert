@@ -45,4 +45,4 @@ jobs:
           sudo docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/forumapi-container:0.1
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/forumapi-container:0.1
 
-          sudo docker run -d --network=host --restart=always -e PGHOST=${{ secrets.PGHOST_PROD }} -e PGPORT=${{ secrets.PGPORT }} -e PGUSER=${{ secrets.PGUSER }} -e PGPASSWORD=${{ secrets.PGPASSWORD }} -e PGDATABASE=${{ secrets.PGDATABASE }} -e ACCESS_TOKEN_KEY=${{ secrets.ACCESS_TOKEN_KEY }} -e REFRESH_TOKEN_KEY=${{ secrets.REFRESH_TOKEN_KEY }} --name forumapi-cointainer ${{ secrets.DOCKERHUB_USERNAME }}/forumapi:0.1
+          sudo docker run -d --network=host --restart=always -e PGHOST=${{ secrets.PGHOST_PROD }} -e PGPORT=${{ secrets.PGPORT }} -e PGUSER=${{ secrets.PGUSER }} -e PGPASSWORD=${{ secrets.PGPASSWORD }} -e PGDATABASE=${{ secrets.PGDATABASE }} -e ACCESS_TOKEN_KEY=${{ secrets.ACCESS_TOKEN_KEY }} -e REFRESH_TOKEN_KEY=${{ secrets.REFRESH_TOKEN_KEY }} --name forumapi-container ${{ secrets.DOCKERHUB_USERNAME }}/forumapi:0.1
