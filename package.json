@@ -9,8 +9,7 @@
     "test": "jest --coverage -i",
     "test:watch:change": "jest --watch -i",
     "test:watch": "jest --watchAll --coverage -i",
-    "migrate": "node-pg-migrate",
-    "migrate:test": "node-pg-migrate --envPath .test.env"
+    "migrate": "node-pg-migrate -f config.database.json"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +18,6 @@
     "@hapi/hapi": "^21.3.3",
     "@hapi/jwt": "^3.2.0",
     "bcrypt": "^5.1.1",
-    "dotenv": "^16.4.5",
     "instances-container": "^2.0.6",
     "nanoid": "^3.3.7",
     "pg": "^8.11.3"
