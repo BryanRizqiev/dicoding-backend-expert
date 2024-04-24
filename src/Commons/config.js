@@ -1,4 +1,5 @@
 /* istanbul ignore file */
+// config menyesuaikan dengan environment ci/cd
 let config
 
 if (process.env.NODE_ENV === 'test') {
