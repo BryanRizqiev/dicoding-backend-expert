@@ -8,8 +8,7 @@
     "start:dev": "nodemon src/app.js",
     "test": "jest --coverage -i",
     "test:watch:change": "jest --watch -i",
-    "test:watch": "jest --watchAll --coverage -i",
-    "migrate": "node-pg-migrate -f config.database.json"
+    "test:watch": "jest --watchAll --coverage -i"
   },
   "keywords": [],
   "author": "",
